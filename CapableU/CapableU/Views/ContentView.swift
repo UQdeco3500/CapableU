@@ -13,12 +13,24 @@ struct ContentView: View {
 	var board = BoardModel()
 	
 	var body: some View {
-		ToolbarView(model: board)
-			.frame(height: 75)
-			.padding()
-		Spacer()
-		
-		BoardView(board: board)
+		ZStack {
+			BoardView(board: board)
+			
+			VStack {
+				HStack{
+					ToolbarView(model: board)
+						.frame(height: 75)
+						.padding()
+					Spacer()
+				}
+				Spacer()
+				HStack{
+					Spacer()
+					ProfileBarView(profiles: board.profiles)
+						.padding()
+				}
+			}
+		}
 	}
 }
 

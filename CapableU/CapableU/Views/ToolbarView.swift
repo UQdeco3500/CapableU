@@ -16,7 +16,7 @@ struct ToolbarView: View {
 			Button{
 				model.recipes.append(Recipe(
 					title: "Poke Bowl",
-					coverPhoto: "poke-bowl",
+					coverPhotoString: "poke-bowl",
 					description: "These delicious Poke Bowls are healthy and delicious!"))
 			} label: {
 				Image(systemName: "fork.knife.circle")

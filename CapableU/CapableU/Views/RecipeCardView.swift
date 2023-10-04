@@ -13,6 +13,7 @@ struct RecipeCardView: View {
 	@GestureState private var startLocation: CGPoint? = nil
 	
 	var recipe: Recipe
+	@State private var attachedProfiles: [Profile] = []
 	
 	var simpleDrag: some Gesture {
 		DragGesture()
@@ -62,6 +63,21 @@ struct RecipeCardView: View {
 					.shadow(radius: 4)
 					.padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
 			}
+			HStack{
+				Spacer()
+				VStack {
+					ForEach(attachedProfiles, id: \.self) {
+						Image($0.profilePhotoString)
+							.resizable()
+							.aspectRatio(contentMode: .fill)
+							.frame(width: 50, height: 50)
+							.cornerRadius(15)
+							.padding()
+					}
+					Spacer()
+				}
+				
+			}
 		}
 		.cornerRadius(10)
 		.shadow(radius: 5)
@@ -69,6 +85,11 @@ struct RecipeCardView: View {
 		.frame(width: 300, height: 200)
 		.position(location)
 		.gesture(simpleDrag)
+		.dropDestination(for: Profile.self) { items, location in
+			attachedProfiles.append(items.first!)
+			print("Recieved profiled: \(items.first?.name ?? "Null")")
+			return true
+		}
 	}
 }
 
@@ -88,7 +109,7 @@ struct RecipeCardView_Previews: PreviewProvider {
 	static var previews: some View {
 		RecipeCardView(recipe: Recipe(
 				title: "Poke Bowl",
-				coverPhoto: "poke-bowl",
+				coverPhotoString: "poke-bowl",
 				description: "These delicious Poke Bowls are healthy and delicious!"))
 		.frame(width: 300, height: 400)
 	}

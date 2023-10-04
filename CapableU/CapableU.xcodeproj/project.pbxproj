@@ -16,6 +16,7 @@
 		4FA5AC042AC4435B0045BD18 /* BoardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FA5AC032AC4435B0045BD18 /* BoardModel.swift */; };
 		4FBCCF5F2ABB9F3400906E12 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBCCF5E2ABB9F3400906E12 /* BoardView.swift */; };
 		4FBCCF612ABB9FD500906E12 /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBCCF602ABB9FD500906E12 /* ToolbarView.swift */; };
+		4FCC125D2ACCE7DF0075B878 /* ProfileBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FCC125C2ACCE7DF0075B878 /* ProfileBarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		4FA5AC032AC4435B0045BD18 /* BoardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardModel.swift; sourceTree = "<group>"; };
 		4FBCCF5E2ABB9F3400906E12 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		4FBCCF602ABB9FD500906E12 /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
+		4FCC125C2ACCE7DF0075B878 /* ProfileBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBarView.swift; sourceTree = "<group>"; };
+		4FCC125E2ACCF7200075B878 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,6 +64,7 @@
 		4F72759F2ABA77180024AEC8 /* CapableU */ = {
 			isa = PBXGroup;
 			children = (
+				4FCC125E2ACCF7200075B878 /* Info.plist */,
 				4FA5AC022AC4431F0045BD18 /* Model */,
 				4FBCCF5D2ABB9F1100906E12 /* Views */,
 				4F7275A02ABA77180024AEC8 /* CapableUApp.swift */,
@@ -92,6 +96,7 @@
 				4F7275A22ABA77180024AEC8 /* ContentView.swift */,
 				4FBCCF5E2ABB9F3400906E12 /* BoardView.swift */,
 				4FBCCF602ABB9FD500906E12 /* ToolbarView.swift */,
+				4FCC125C2ACCE7DF0075B878 /* ProfileBarView.swift */,
 				4F9E18062ACC348E001DF182 /* RecipeCardView.swift */,
 				4F4F311B2AC3E739007EA300 /* NoteCardView.swift */,
 			);
@@ -168,6 +173,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FCC125D2ACCE7DF0075B878 /* ProfileBarView.swift in Sources */,
 				4F9E18072ACC348E001DF182 /* RecipeCardView.swift in Sources */,
 				4FA5AC042AC4435B0045BD18 /* BoardModel.swift in Sources */,
 				4F4F311C2AC3E739007EA300 /* NoteCardView.swift in Sources */,
@@ -311,6 +317,7 @@
 				DEVELOPMENT_TEAM = P2GQN8FZ4L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CapableU/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -344,6 +351,7 @@
 				DEVELOPMENT_TEAM = P2GQN8FZ4L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = CapableU/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
