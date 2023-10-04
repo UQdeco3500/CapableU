@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F1FE5542ACE2335003128D6 /* QRSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F1FE5532ACE2335003128D6 /* QRSheetView.swift */; };
 		4F4F311C2AC3E739007EA300 /* NoteCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4F311B2AC3E739007EA300 /* NoteCardView.swift */; };
 		4F7275A12ABA77180024AEC8 /* CapableUApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7275A02ABA77180024AEC8 /* CapableUApp.swift */; };
 		4F7275A32ABA77180024AEC8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F7275A22ABA77180024AEC8 /* ContentView.swift */; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F1FE5532ACE2335003128D6 /* QRSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRSheetView.swift; sourceTree = "<group>"; };
 		4F4F311B2AC3E739007EA300 /* NoteCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCardView.swift; sourceTree = "<group>"; };
 		4F72759D2ABA77180024AEC8 /* CapableU.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CapableU.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F7275A02ABA77180024AEC8 /* CapableUApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapableUApp.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 				4F7275A22ABA77180024AEC8 /* ContentView.swift */,
 				4FBCCF5E2ABB9F3400906E12 /* BoardView.swift */,
 				4FBCCF602ABB9FD500906E12 /* ToolbarView.swift */,
+				4F1FE5532ACE2335003128D6 /* QRSheetView.swift */,
 				4FCC125C2ACCE7DF0075B878 /* ProfileBarView.swift */,
 				4F9E18062ACC348E001DF182 /* RecipeCardView.swift */,
 				4F4F311B2AC3E739007EA300 /* NoteCardView.swift */,
@@ -173,6 +176,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4F1FE5542ACE2335003128D6 /* QRSheetView.swift in Sources */,
 				4FCC125D2ACCE7DF0075B878 /* ProfileBarView.swift in Sources */,
 				4F9E18072ACC348E001DF182 /* RecipeCardView.swift in Sources */,
 				4FA5AC042AC4435B0045BD18 /* BoardModel.swift in Sources */,

@@ -10,8 +10,21 @@ import SwiftUI
 struct ProfileBarView: View {
 	var profiles: [Profile]
 	
+	@State private var showingSheet = false
+	
     var body: some View {
 		HStack {
+//			Button{
+//				showingSheet.toggle()
+//			} label: {
+//				Image(systemName: "person.badge.plus")
+//					.resizable()
+//					.scaledToFit()
+//			}
+//			.buttonStyle(.bordered)
+//			.frame(width: 75, height: 75)
+//			.buttonBorderShape(.roundedRectangle(radius: 15))
+//			
 			ForEach(profiles, id: \.profilePhotoString) { profile in
 				ProfileButtonView(profile: profile)
 			}
