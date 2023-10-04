@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct NoteCardView: View {
-	@State private var location: CGPoint = CGPoint(x: 50, y: 50)
+	@State private var location: CGPoint = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
 	@GestureState private var fingerLocation: CGPoint? = nil
 	@GestureState private var startLocation: CGPoint? = nil
 	
-	var textContent: String
+	@State var textContent: String = ""
 	
 	var simpleDrag: some Gesture {
 		DragGesture()
@@ -27,19 +27,19 @@ struct NoteCardView: View {
 	}
 	
 	var body: some View {
-		Text(textContent)
-			.fixedSize(horizontal: false, vertical: true)
+		TextField("Looks delicious!", text: $textContent, axis: .vertical)
 			.multilineTextAlignment(.center)
+			.frame(maxWidth: 200)
+			.lineLimit(10)
 			.padding()
-			.frame(width: 100, height: 100)
 			.background(
 				RoundedRectangle(cornerRadius: 10)
-					.foregroundColor(.pink))
+					.foregroundColor(.yellow))
 			.position(location)
 			.gesture(simpleDrag)
 	}
 }
 
 #Preview {
-    NoteCardView(textContent: "Example Note")
+    NoteCardView()
 }

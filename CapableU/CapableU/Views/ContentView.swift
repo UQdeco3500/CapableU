@@ -25,7 +25,6 @@ struct ContentView: View {
 				}
 				Spacer()
 				HStack{
-					Spacer()
 					ProfileBarView(profiles: board.profiles)
 						.padding()
 				}

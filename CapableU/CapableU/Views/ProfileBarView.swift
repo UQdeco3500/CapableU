@@ -31,7 +31,7 @@ struct ProfileButtonView: View {
 			Image(profile.profilePhotoString) // Use the profilePhotoString as the image name
 				.resizable()
 				.aspectRatio(contentMode: .fill)
-				.frame(width: 50, height: 50) // Adjust the size as needed
+				.frame(width: 75, height: 75) // Adjust the size as needed
 				.cornerRadius(15)
 		}
 		.buttonStyle(.borderless)
