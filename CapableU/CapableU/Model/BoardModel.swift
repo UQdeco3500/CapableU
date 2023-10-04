@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import SwiftUI
 
 @Observable class BoardModel {
 	var notes: [Note] = []
+	var recipes: [Recipe] = []
 }
 
 struct Note : Identifiable, Hashable {
@@ -20,6 +22,20 @@ struct Note : Identifiable, Hashable {
 		id = UUID()
 		self.content = content
 	}
+}
+
+struct Recipe : Identifiable, Hashable {
+	init(title: String, coverPhoto: String, description: String) {
+		self.id = UUID()
+		self.title = title
+		self.coverPhotoString = coverPhoto
+		self.description = description
+	}
+	
+	var id: UUID
+	var title : String
+	var coverPhotoString : String
+	var description: String
 }
 
 

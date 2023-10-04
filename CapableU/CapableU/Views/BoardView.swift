@@ -15,6 +15,9 @@ struct BoardView: View {
 		ForEach(board.notes, id: \.self) {
 			NoteCardView(textContent: $0.content)
 		}
+		ForEach(board.recipes, id: \.self) {
+			RecipeCardView(recipe: $0)
+		}
 	}
 }
 

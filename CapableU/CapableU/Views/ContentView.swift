@@ -13,29 +13,12 @@ struct ContentView: View {
 	var board = BoardModel()
 	
 	var body: some View {
-		ZStack(alignment: .leading) {
-			
-			BoardView(board: board)
-			VStack {
-//				ToolbarView()
-//					.frame(height: 100)
-				Button {
-					board.notes.append(Note("Heres another note."))
-					print(board.notes)
-				} label: {
-					Image(systemName: "plus.circle")
-						.resizable()
-						.scaledToFit()
-						.padding()
-						.foregroundColor(.black)
-						.frame(height: 100)
-				}.buttonStyle(.borderedProminent)
-				Spacer()
-			}
+		ToolbarView(model: board)
+			.frame(height: 75)
 			.padding()
-				
-		}
+		Spacer()
 		
+		BoardView(board: board)
 	}
 }
 
