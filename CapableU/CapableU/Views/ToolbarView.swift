@@ -20,10 +20,7 @@ struct ToolbarView: View {
 			Button{
 				showingQR.toggle()
 				operation = {
-					model.recipes.append(Recipe(
-						title: "Poke Bowl",
-						coverPhotoString: "poke-bowl",
-						description: "These delicious Poke Bowls are healthy and delicious!"))
+					model.recipes.append(model.recipes.first!)
 				}
 			} label: {
 				Image(systemName: "fork.knife.circle")

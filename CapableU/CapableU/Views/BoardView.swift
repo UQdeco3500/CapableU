@@ -16,7 +16,8 @@ struct BoardView: View {
 			NoteCardView(textContent: $0.content)
 		}
 		ForEach(board.recipes, id: \.self) {
-			RecipeCardView(recipe: $0)
+			RecipeCardView(recipe: $0, model: board)
+				.frame(maxWidth: 200)
 		}
 	}
 }

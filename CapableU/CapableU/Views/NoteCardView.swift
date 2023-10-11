@@ -37,7 +37,7 @@ struct NoteCardView: View {
 			.background(
 				RoundedRectangle(cornerRadius: 10)
 					.foregroundColor(.yellow))
-			.position(x: location.x, y:keyboardHeight == 0 ? location.x : keyboardHeight / 2)
+			.position(x: location.x, y:keyboardHeight == 0 ? location.y : keyboardHeight / 2)
 			.gesture(simpleDrag)
 			.onReceive(Publishers.keyboardHeight) { 
 				self.keyboardHeight = $0

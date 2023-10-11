@@ -8,12 +8,18 @@
 import SwiftUI
 
 struct RecipeCardView: View {
-	@State private var location: CGPoint = CGPoint(x: 50, y: 50)
+	@State private var location: CGPoint = CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height/2)
 	@GestureState private var fingerLocation: CGPoint? = nil
 	@GestureState private var startLocation: CGPoint? = nil
 	
-	var recipe: Recipe
+	@State var recipe: Recipe
+	var model: BoardModel
+	private var alergenConflicts: [Profile]? {
+		model.hasAlergenConflict(recipe)
+	}
 	@State private var attachedProfiles: [Profile] = []
+	@State private var isDetailed: Bool = true
+	@State private var isAboutToBeDeleted = false
 	
 	var simpleDrag: some Gesture {
 		DragGesture()
@@ -28,8 +34,91 @@ struct RecipeCardView: View {
 	}
 	
 	var body: some View {
+		VStack{
+			ZStack(alignment: .bottomLeading) {
+				BlurryBottomedImage(image: Image(recipe.coverPhotoString))
+					.cornerRadius(10)
+					.onTapGesture(count: 2) {
+						isAboutToBeDeleted.toggle()
+					}
+					.onTapGesture(count: 1) {
+						withAnimation {
+							isDetailed.toggle()
+						}
+					}
+					.alert("Delete \(recipe.title) card?", isPresented: $isAboutToBeDeleted) {
+						Button("Delete", role: .destructive) {
+							model.recipes.remove(at: model.recipes.firstIndex(of: recipe)!)
+						}
+						Button("Cancel", role: .cancel) { }
+					}
+				
+				VStack(alignment: .leading) {
+					Text(recipe.title)
+						.font(isDetailed ? .largeTitle : .title)
+						.fontWeight(.bold)
+						.fontDesign(.serif)
+						.foregroundColor(.white)
+						.shadow(radius: 10)
+						.padding(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
+					if !isDetailed {
+						HStack {
+							Text(recipe.description)
+								.font(.body)
+								.foregroundColor(.white)
+								.shadow(radius: 4)
+								.padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
+							if  alergenConflicts != nil {
+								Spacer()
+								Image(systemName: "exclamationmark.octagon.fill")
+									.symbolRenderingMode(.multicolor)
+									.resizable()
+									.scaledToFit()
+									.frame(maxHeight: 50)
+									.padding()
+							}
+							
+						}
+					}
+					
+					
+				}
+				if let owner = recipe.owner {
+					Image(owner.profilePhotoString)
+						.resizable()
+						.aspectRatio(contentMode: .fill)
+						.frame(width: 50, height: 50)
+						.cornerRadius(15)
+						.padding()
+						.offset(x: -50, y: -150)
+				}
+			}
+			RecipeCardDetailView(isVisible: $isDetailed, recipe: recipe, alergenConflicts: alergenConflicts)
+				.offset(y: -20)
+				.zIndex(-1)
+		}
+		.shadow(radius: 5)
+		.frame(width: 300, height: 200)
+		.padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
+		.gesture(simpleDrag)
+		.position(x: location.x, y: isDetailed ? UIScreen.main.bounds.height/2 : location.y)
+		.dropDestination(for: Profile.self) { items, location in
+			if recipe.owner == nil {
+				recipe.setOwner(as: items.first!)
+			}
+			
+			attachedProfiles.append(items.first!)
+			return true
+		}
+	}
+}
+
+struct BlurryBottomedImage: View {
+	var image: Image
+	
+	var body: some View {
 		ZStack(alignment: .bottomLeading) {
-			Image(recipe.coverPhotoString)
+			image
 				.resizable()
 				.aspectRatio(contentMode: .fill)
 				.frame(width: 300, height: 200)
@@ -40,55 +129,13 @@ struct RecipeCardView: View {
 				.background(
 					VisualEffectView(effect: UIBlurEffect(style: .regular)))
 			
-			Image(recipe.coverPhotoString)
+			image
 				.resizable()
 				.aspectRatio(contentMode: .fill)
 				.frame(width: 300, height: 200)
 				.mask(LinearGradient(stops: [.init(color: .white, location: 0),
 											 .init(color: .white, location: 0.4),
 											 .init(color: .clear, location: 0.80),], startPoint: .top, endPoint: .bottom))
-			
-			VStack(alignment: .leading, spacing: 8) {
-				Text(recipe.title)
-					.font(.title)
-					.fontWeight(.bold)
-					.fontDesign(.serif)
-					.foregroundColor(.white)
-					.shadow(radius: 10)
-					.padding(EdgeInsets(top: 8, leading: 16, bottom: 0, trailing: 16))
-				
-				Text(recipe.description)
-					.font(.body)
-					.foregroundColor(.white)
-					.shadow(radius: 4)
-					.padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
-			}
-			HStack{
-				Spacer()
-				VStack {
-					ForEach(attachedProfiles, id: \.self) {
-						Image($0.profilePhotoString)
-							.resizable()
-							.aspectRatio(contentMode: .fill)
-							.frame(width: 50, height: 50)
-							.cornerRadius(15)
-							.padding()
-					}
-					Spacer()
-				}
-				
-			}
-		}
-		.cornerRadius(10)
-		.shadow(radius: 5)
-		.padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
-		.frame(width: 300, height: 200)
-		.position(location)
-		.gesture(simpleDrag)
-		.dropDestination(for: Profile.self) { items, location in
-			attachedProfiles.append(items.first!)
-			print("Recieved profiled: \(items.first?.name ?? "Null")")
-			return true
 		}
 	}
 }
@@ -107,91 +154,80 @@ struct VisualEffectView: UIViewRepresentable {
 
 struct RecipeCardView_Previews: PreviewProvider {
 	static var previews: some View {
-		RecipeCardView(recipe: Recipe(
-				title: "Poke Bowl",
-				coverPhotoString: "poke-bowl",
-				description: "These delicious Poke Bowls are healthy and delicious!"))
+		RecipeCardView(recipe: BoardModel().recipes.first!, model: BoardModel())
 		.frame(width: 300, height: 400)
 	}
 }
 
 struct RecipeCardDetailView: View {
-	@State private var location: CGPoint = CGPoint(x: 50, y: 50)
-	@GestureState private var fingerLocation: CGPoint? = nil
-	@GestureState private var startLocation: CGPoint? = nil
 	
+	@Binding var isVisible: Bool
 	var recipe: Recipe
-	@State private var attachedProfiles: [Profile] = []
-	
-	var simpleDrag: some Gesture {
-		DragGesture()
-			.onChanged { value in
-				var newLocation = startLocation ?? location
-				newLocation.x += value.translation.width
-				newLocation.y += value.translation.height
-				self.location = newLocation
-			}.updating($startLocation) { (value, startLocation, transaction) in
-				startLocation = startLocation ?? location
-			}
-	}
+	var alergenConflicts: [Profile]?
 	
 	var body: some View {
-		ZStack(alignment: .bottomLeading) {
-			Image(recipe.coverPhotoString)
-				.resizable()
-				.aspectRatio(contentMode: .fill)
-				.frame(width: 300, height: 200)
-				.clipped()
-			
-			VStack{}
-				.frame(width: 300, height: 200)
-				.background(
-					VisualEffectView(effect: UIBlurEffect(style: .regular)))
-			
-			Image(recipe.coverPhotoString)
-				.resizable()
-				.aspectRatio(contentMode: .fill)
-				.frame(width: 300, height: 200)
-				.mask(LinearGradient(stops: [.init(color: .white, location: 0),
-											 .init(color: .white, location: 0.4),
-											 .init(color: .clear, location: 0.80),], startPoint: .top, endPoint: .bottom))
-			
+		if isVisible {
 			VStack(alignment: .leading, spacing: 8) {
-				Text(recipe.title)
-					.font(.largeTitle)
-					.fontWeight(.bold)
-					.fontDesign(.serif)
-					.foregroundColor(.white)
-					.shadow(radius: 10)
-					.padding(EdgeInsets(top: 8, leading: 16, bottom: 0, trailing: 16))
-			}
-			HStack{
-				Spacer()
-				VStack {
-					ForEach(attachedProfiles, id: \.self) {
-						Image($0.profilePhotoString)
-							.resizable()
-							.aspectRatio(contentMode: .fill)
-							.frame(width: 50, height: 50)
-							.cornerRadius(15)
-							.padding()
+				Text(recipe.description)
+					.font(.body)
+					.shadow(radius: 4)
+					.padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 16))
+				if alergenConflicts != nil {
+					HStack {
+						Text("\(Image(systemName: "allergens")) Contains: ")
+						ForEach(recipe.alergens, id: \.self) { alergen in
+							Text("\(Image(systemName: alergen.rawValue))")
+						}
+						Spacer()
+					}				}
+				if let conflictingProfiles = alergenConflicts {
+					HStack {
+						Text("\(Image(systemName: "person.crop.circle.badge.exclamationmark")) Not suitable for: ")
+							.symbolRenderingMode(.multicolor)
+							.lineLimit(1)
+						Spacer()
+						ForEach(conflictingProfiles) { profile in
+							Image(profile.profilePhotoString)
+								.resizable()
+								.aspectRatio(contentMode: .fill)
+								.frame(width: 25, height: 25)
+								.cornerRadius(15)
+						}
 					}
-					Spacer()
 				}
-				
+				ScrollView {
+					Text("Ingredients")
+						.fontDesign(.serif)
+						.font(.title3)
+					VStack(alignment: .leading){
+						ForEach(recipe.ingredients, id: \.self) { ingredient in
+							Text(ingredient)
+						}
+					}
+					Text("Method")
+						.fontDesign(.serif)
+						.font(.title3)
+					VStack(alignment: .leading){
+						ForEach(recipe.method, id: \.self) { step in
+							Text(step)
+						}
+					}
+				}
 			}
-		}
-		.cornerRadius(10)
-		.shadow(radius: 5)
-		.padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
-		.frame(width: 300, height: 200)
-		.position(location)
-		.gesture(simpleDrag)
-		.dropDestination(for: Profile.self) { items, location in
-			attachedProfiles.append(items.first!)
-			print("Recieved profiled: \(items.first?.name ?? "Null")")
-			return true
+			.foregroundColor(.white)
+			.shadow(radius: 5)
+			.padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
+			.frame(width: 300, height: 600)
+			.background{
+				Image(recipe.coverPhotoString)
+					.resizable()
+					.scaleEffect(3)
+					.blur(radius: 30)
+					.saturation(1.5)
+			}
+			.cornerRadius(10)
 		}
 	}
 }
+
 
