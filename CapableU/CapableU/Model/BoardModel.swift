@@ -10,6 +10,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 @Observable class BoardModel {
+	var stickers: [ProfileSticker] = []
 	var notes: [Note] = []
 	var recipes: [Recipe] = [
 		Recipe(owner: nil,
@@ -59,14 +60,10 @@ import UniformTypeIdentifiers
 }
 
 struct Note : Identifiable, Hashable {
-	var id: UUID
+	var id = UUID()
 	
+	var owner: Profile?
 	var content : String
-	
-	init(_ content: String) {
-		id = UUID()
-		self.content = content
-	}
 }
 
 struct Recipe : Identifiable, Hashable {
@@ -101,6 +98,14 @@ struct Profile : Identifiable, Hashable, Codable, Transferable {
 
 extension UTType {
 	static var profile: UTType { UTType(exportedAs: "com.capableu.profile") }
+}
+
+struct ProfileSticker: Identifiable, Hashable {
+
+	var id = UUID()
+	var profile: Profile
+	var x: CGFloat
+	var y: CGFloat
 }
 
 enum alergenFlag: String, Codable {

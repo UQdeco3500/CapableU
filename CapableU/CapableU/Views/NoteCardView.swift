@@ -14,7 +14,8 @@ struct NoteCardView: View {
 	@GestureState private var startLocation: CGPoint? = nil
 	@State private var keyboardHeight: CGFloat = 0
 	
-	@State var textContent: String = ""
+	@State var note: Note
+	var board: BoardModel
 	
 	var simpleDrag: some Gesture {
 		DragGesture()
@@ -29,19 +30,34 @@ struct NoteCardView: View {
 	}
 	
 	var body: some View {
-		TextField("Looks delicious!", text: $textContent, axis: .vertical)
-			.multilineTextAlignment(.center)
-			.frame(maxWidth: 200)
-			.lineLimit(10)
-			.padding()
-			.background(
-				RoundedRectangle(cornerRadius: 10)
-					.foregroundColor(.yellow))
-			.position(x: location.x, y:keyboardHeight == 0 ? location.y : keyboardHeight / 2)
-			.gesture(simpleDrag)
-			.onReceive(Publishers.keyboardHeight) { 
-				self.keyboardHeight = $0
+		ZStack{
+			TextField("Looks delicious!", text: $note.content, axis: .vertical)
+				.multilineTextAlignment(.center)
+				.frame(maxWidth: 200)
+				.lineLimit(10)
+				.padding()
+				.background(
+					RoundedRectangle(cornerRadius: 10)
+						.foregroundColor(.yellow))
+			if let owner = note.owner {
+				Image(owner.profilePhotoString)
+					.resizable()
+					.aspectRatio(contentMode: .fill)
+					.frame(width: 50, height: 50)
+					.cornerRadius(15)
+					.offset(x: 125)
 			}
+		}
+		.shadow(radius: 5)
+		.position(x: location.x, y:keyboardHeight == 0 ? location.y : keyboardHeight / 2)
+		.gesture(simpleDrag)
+		.onReceive(Publishers.keyboardHeight) {
+			self.keyboardHeight = $0
+		}
+		.dropDestination(for: Profile.self) { items, location in
+			note.owner = items.first!
+			return true
+		}
 	}
 }
 
@@ -68,5 +84,8 @@ extension Notification {
 }
 
 #Preview {
-    NoteCardView()
+	NoteCardView(note: Note(owner: Profile(name: "Jane Doe",
+										   initials: "JD",
+										   profilePhotoString: "jane-doe",
+										   alergens: [.seafood]), content: "Test"), board: BoardModel())
 }

@@ -30,7 +30,7 @@ struct ToolbarView: View {
 			Button{
 				showingQR.toggle()
 				operation = {
-					model.notes.append(Note("Heres another note."))
+					model.notes.append(Note(content: "Heres another note."))
 				}
 			} label: {
 				Image(systemName: "square.and.pencil.circle")

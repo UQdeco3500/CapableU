@@ -12,12 +12,27 @@ struct BoardView: View {
 	var board: BoardModel
 	
 	var body: some View {
-		ForEach(board.notes, id: \.self) {
-			NoteCardView(textContent: $0.content)
-		}
-		ForEach(board.recipes, id: \.self) {
-			RecipeCardView(recipe: $0, model: board)
-				.frame(maxWidth: 200)
+		ZStack{
+			Spacer()
+				.frame(maxWidth: .infinity, maxHeight: .infinity)
+				.background(.white)
+				.dropDestination(for: Profile.self) { items, location in
+					board.stickers.append(ProfileSticker(
+						profile: items.first!,
+						x: location.x, y: location.y))
+					return true
+				}
+			ForEach(board.recipes, id: \.self) {
+				RecipeCardView(recipe: $0, model: board)
+					.frame(maxWidth: 200)
+			}
+			ForEach(board.notes, id: \.self) {
+				NoteCardView(note: $0, board: board)
+			}
+			ForEach(board.stickers, id: \.self) {
+				let location = CGPoint(x: $0.x, y: $0.y)
+				ProfileStickerView(location: location, profile: $0.profile)
+			}
 		}
 	}
 }

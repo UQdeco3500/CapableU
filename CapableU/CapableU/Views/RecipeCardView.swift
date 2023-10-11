@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecipeCardView: View {
-	@State private var location: CGPoint = CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height/2)
+	@State private var location: CGPoint = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
 	@GestureState private var fingerLocation: CGPoint? = nil
 	@GestureState private var startLocation: CGPoint? = nil
 	
@@ -18,7 +18,7 @@ struct RecipeCardView: View {
 		model.hasAlergenConflict(recipe)
 	}
 	@State private var attachedProfiles: [Profile] = []
-	@State private var isDetailed: Bool = true
+	@State private var isDetailed: Bool = false
 	@State private var isAboutToBeDeleted = false
 	
 	var simpleDrag: some Gesture {
@@ -74,7 +74,7 @@ struct RecipeCardView: View {
 									.symbolRenderingMode(.multicolor)
 									.resizable()
 									.scaledToFit()
-									.frame(maxHeight: 50)
+									.frame(maxHeight: 25)
 									.padding()
 							}
 							
@@ -100,8 +100,8 @@ struct RecipeCardView: View {
 		.shadow(radius: 5)
 		.frame(width: 300, height: 200)
 		.padding(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
-		.gesture(simpleDrag)
 		.position(x: location.x, y: isDetailed ? UIScreen.main.bounds.height/2 : location.y)
+		.gesture(simpleDrag)
 		.dropDestination(for: Profile.self) { items, location in
 			if recipe.owner == nil {
 				recipe.setOwner(as: items.first!)
