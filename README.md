@@ -1,7 +1,7 @@
 # CapableU
 ***
 ## Link To Project Proposal
-[Proposal](/Adulting101_DesignProposal.pdf)
+[Proposal](/wiki/Adulting101_DesignProposal.pdf)
 
 ## Link to Design Process Overview
 [Design Process](https://github.com/UQdeco3500/CapableU/wiki/Design-Process)
