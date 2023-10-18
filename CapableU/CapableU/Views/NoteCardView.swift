@@ -13,6 +13,7 @@ struct NoteCardView: View {
 	@GestureState private var fingerLocation: CGPoint? = nil
 	@GestureState private var startLocation: CGPoint? = nil
 	@State private var keyboardHeight: CGFloat = 0
+	@FocusState private var isFocused: Bool
 	
 	@State var note: Note
 	var board: BoardModel
@@ -30,44 +31,58 @@ struct NoteCardView: View {
 	}
 	
 	var body: some View {
-		ZStack(alignment: .bottomLeading){
-			TextField("Looks delicious!", text: $note.content, axis: .vertical)
-				.multilineTextAlignment(.leading)
-				.lineLimit(7, reservesSpace: false)
-				.padding()
-				.background(
-					RoundedRectangle(cornerRadius: 10)
-						.foregroundColor(note.color))
-			if let owner = note.owner {
-				Image(owner.profilePhotoString)
-					.resizable()
-					.aspectRatio(contentMode: .fill)
-					.frame(width: 50, height: 50)
-					.cornerRadius(15)
-					.offset(x: -30, y: 30)
+		ZStack(alignment: .center){
+			if isFocused {
+				Rectangle()
+					.fill(.ultraThinMaterial)
+					.frame(maxWidth: .infinity, maxHeight: .infinity)
+					.edgesIgnoringSafeArea(.all)
 			}
-			HStack{
-				Spacer()
-				ContextMenuButton(model: board) {
-					board.notes.remove(at: board.notes.firstIndex(of: note)!)
+			
+			ZStack{
+				HStack{
+					TextField("Looks delicious!", text: $note.content, axis: .vertical)
+						.multilineTextAlignment(.leading)
+						.lineLimit(7, reservesSpace: false)
+						.focused($isFocused)
+					
+					ContextMenuButton(model: board, ownableObject: $note) {
+						board.notes.remove(at: board.notes.firstIndex(of: note)!)
+					}
+					.buttonStyle(.plain)
+					.foregroundColor(.white)
+					.onChange(of: note) {
+						note.color = board.favouriteColors[board.profiles.firstIndex(of: note.owner!)!]
+					}
 				}
-				.buttonStyle(.plain)
-				.foregroundColor(.white)
-				
-			}.padding()
+					.padding()
+					.frame(maxWidth: 200)
+					.background(
+						RoundedRectangle(cornerRadius: 10)
+							.foregroundColor(note.color))
+				if let owner = note.owner {
+					Image(owner.profilePhotoString)
+						.resizable()
+						.aspectRatio(contentMode: .fill)
+						.frame(width: 50, height: 50)
+						.cornerRadius(15)
+						.offset(x: -115)
+				}
+			}
+				.position(x: isFocused ? UIScreen.current!.bounds.midX : location.x,
+						  y: isFocused ? UIScreen.current!.bounds.midY - keyboardHeight / 2 : location.y)
+				.gesture(simpleDrag)
 		}
-		.shadow(radius: 5)
-		.position(x: location.x, y:keyboardHeight == 0 ? location.y : keyboardHeight / 2)
-		.gesture(simpleDrag)
-		.onReceive(Publishers.keyboardHeight) {
-			self.keyboardHeight = $0
-		}
-		.dropDestination(for: Profile.self) { items, location in
-			note.owner = items.first!
-			note.color = board.favouriteColors[board.profiles.firstIndex(of: items.first!)!]
-			return true
-		}
-		.frame(width: 200)
+			.shadow(radius: 5)
+			.onReceive(Publishers.keyboardHeight) {
+				self.keyboardHeight = $0
+			}
+			.dropDestination(for: Profile.self) { items, location in
+				note.owner = items.first!
+				note.color = board.favouriteColors[board.profiles.firstIndex(of: items.first!)!]
+				return true
+			}
+			.zIndex(isFocused ? .infinity : 0)
 	}
 }
 
@@ -87,6 +102,25 @@ extension Publishers {
 	}
 }
 
+extension UIWindow {
+	static var current: UIWindow? {
+		for scene in UIApplication.shared.connectedScenes {
+			guard let windowScene = scene as? UIWindowScene else { continue }
+			for window in windowScene.windows {
+				if window.isKeyWindow { return window }
+			}
+		}
+		return nil
+	}
+}
+
+
+extension UIScreen {
+	static var current: UIScreen? {
+		UIWindow.current?.screen
+	}
+}
+
 extension Notification {
 	var keyboardHeight: CGFloat {
 		return (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect)?.height ?? 0
@@ -102,3 +136,5 @@ extension Notification {
 							color: .blue,
 							x: 0, y:0), board: BoardModel())
 }
+
+

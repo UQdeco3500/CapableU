@@ -110,7 +110,13 @@ import UniformTypeIdentifiers
 	}
 }
 
-struct Note : Identifiable, Hashable {
+protocol Ownable {
+	var owner: Profile? {
+		get set
+	}
+}
+
+struct Note : Identifiable, Hashable, Ownable {
 	var id = UUID()
 	
 	var owner: Profile?
@@ -119,9 +125,10 @@ struct Note : Identifiable, Hashable {
 	var x: CGFloat
 	var y: CGFloat
 
+	
 }
 
-struct Photo: Identifiable, Hashable {
+struct Photo: Identifiable, Hashable, Ownable {
 	var id = UUID()
 	
 	var owner: Profile?
@@ -132,7 +139,7 @@ struct Photo: Identifiable, Hashable {
 	var y: CGFloat = 0
 }
 
-struct Recipe : Identifiable, Hashable {
+struct Recipe : Identifiable, Hashable, Ownable {
 	var owner: Profile?
 	
 	var id = UUID()

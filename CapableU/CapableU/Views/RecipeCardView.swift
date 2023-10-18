@@ -96,7 +96,7 @@ struct RecipeCardView: View {
 								.offset(x: -30, y: -30)
 						}
 						Spacer()
-						ContextMenuButton(model: model) {
+						ContextMenuButton(model: model, ownableObject: $recipe) {
 							model.recipes.remove(at: model.recipes.firstIndex(of: recipe)!)
 						}
 						.buttonStyle(.plain)

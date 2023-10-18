@@ -7,10 +7,12 @@
 
 import SwiftUI
 
-struct ContextMenuButton: View {
+struct ContextMenuButton<OwnableObject: Ownable>: View {
 	@State private var triggered = false
 	
 	var model: BoardModel
+	
+	@Binding var ownableObject: OwnableObject
 	
 	var deleteAction: () -> Void
 	
@@ -19,13 +21,26 @@ struct ContextMenuButton: View {
 			Button(role: .destructive, action: deleteAction) {
 				Label("Delete", systemImage: "trash")
 			}
+			
 			Button{
-				model.notes.append(Note(content: "New Comment",
+				model.notes.append(Note(content: "",
 										x: 300,
 										y: 300))
 			} label: {
 				Label("Add comment", systemImage: "text.bubble")
 			}
+			
+			Menu() {
+				ForEach (model.profiles) { profile in
+					Button(profile.name,
+						   image: ImageResource(name: profile.profilePhotoString, bundle: .main)) {
+						ownableObject.owner = profile
+					}
+				}
+			} label: {
+				Label("Set Author", systemImage: "person.badge.plus")
+			}
+			
 		} label: {
 			Image(systemName: "ellipsis.circle")
 				.resizable()
@@ -34,8 +49,4 @@ struct ContextMenuButton: View {
 				.offset(x:4, y:3)
 		}
     }
-}
-
-#Preview {
-	ContextMenuButton(model: BoardModel()) {}
 }

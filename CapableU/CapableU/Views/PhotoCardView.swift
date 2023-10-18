@@ -77,7 +77,7 @@ struct PhotoCardView: View {
 				VStack{
 					HStack {
 						Spacer()
-						ContextMenuButton(model: model) {
+						ContextMenuButton(model: model, ownableObject: $photo) {
 							model.photos.remove(at: model.photos.firstIndex(of: photo)!)
 						}
 						.buttonStyle(.plain)

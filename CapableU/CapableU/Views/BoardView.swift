@@ -13,15 +13,6 @@ struct BoardView: View {
 	
 	var body: some View {
 		ZStack{
-			Spacer()
-				.frame(maxWidth: .infinity, maxHeight: .infinity)
-				.background(.white)
-				.dropDestination(for: Profile.self) { items, location in
-					board.stickers.append(ProfileSticker(
-						profile: items.first!,
-						x: location.x, y: location.y))
-					return true
-				}
 			ForEach(board.recipes, id: \.self) {
 				RecipeCardView(location: CGPoint(x: $0.x, y: $0.y),
 							   recipe: $0,

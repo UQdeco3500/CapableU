@@ -28,7 +28,7 @@ struct ContentView: View {
 					ProfileBarView(profiles: board.profiles)
 						.padding()
 				}
-			}
+			}.ignoresSafeArea(.keyboard)
 		}
 	}
 }

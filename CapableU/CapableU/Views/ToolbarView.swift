@@ -22,7 +22,29 @@ struct ToolbarView: View {
 			Button{
 				showingQR.toggle()
 				operation = {
-					model.recipes.append(model.recipes.first!)
+					model.recipes.append(
+						Recipe(owner: nil,
+							   title: "Poke Bowl",
+							   coverPhotoString: "poke-bowl",
+							   description: "These delicious Poke Bowls are healthy and delicious!",
+							   alergens: [.seafood, .nuts],
+							   ingredients: [
+								"2 Coles Australian Skinless Salmon Portions, cut into 2cm pieces",
+								"2 tbsp teriyaki marinade",
+								"400g edamame or broad beans",
+								"1 tbsp olive oil",
+								"450g pkt microwavable brown rice",
+								"400g pkt Coles Poke Slaw Kit",
+								"1 Lebanese cucumber, thinly sliced crossways",
+								"2 spring onions, thinly sliced",
+								"Pickled ginger, to serve"],
+							   method:[
+								"Combine the salmon and marinade in a bowl. Place in the fridge for 15 mins to develop the flavours.",
+								"Cook the edamame or broad beans in a large saucepan of boiling water following packet directions. Peel. Place in a bowl.",
+								"Heat oil in a large non-stick frying pan over medium heat. Cook salmon, turning, for 4-5 mins or until golden or cooked to your liking.",
+								"Meanwhile, heat the rice following packet directions. Place the salad mix from the salad kit in a large bowl. Add half the dressing from the salad kit and toss to combine.",
+								"Divide the rice among serving bowls. Top with the salad mixture, edamame or broad beans, salmon, cucumber, spring onion and ginger. Sprinkle with the sesame seeds from the salad kit and drizzle with remaining dressing."],
+							   x: 0, y: 200))
 				}
 			} label: {
 				VStack {
@@ -42,9 +64,9 @@ struct ToolbarView: View {
 			.offset(x: expanded ? 80 : 0)
 			
 			Button{
-				model.notes.append(Note(content: "Heres another note.",
-										x: UIScreen.main.bounds.midX,
-										y: UIScreen.main.bounds.midY))
+				model.notes.append(Note(content: "",
+										x: 0,
+										y: 200))
 			} label: {
 				VStack(spacing: 0) {
 					Image(systemName: "note.text.badge.plus")
@@ -65,7 +87,7 @@ struct ToolbarView: View {
 			Button{
 				showingQR.toggle()
 				operation = {
-					
+					model.photos.append(Photo(imageString: "pasta", x: 0, y: 200))
 				}
 			} label: {
 				VStack {
