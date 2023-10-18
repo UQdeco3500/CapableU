@@ -9,7 +9,7 @@ import SwiftUI
 import Combine
 
 struct NoteCardView: View {
-	@State private var location: CGPoint = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
+	@State var location: CGPoint = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
 	@GestureState private var fingerLocation: CGPoint? = nil
 	@GestureState private var startLocation: CGPoint? = nil
 	@State private var keyboardHeight: CGFloat = 0
@@ -30,23 +30,31 @@ struct NoteCardView: View {
 	}
 	
 	var body: some View {
-		ZStack{
+		ZStack(alignment: .bottomLeading){
 			TextField("Looks delicious!", text: $note.content, axis: .vertical)
-				.multilineTextAlignment(.center)
-				.frame(maxWidth: 200)
-				.lineLimit(10)
+				.multilineTextAlignment(.leading)
+				.lineLimit(7, reservesSpace: false)
 				.padding()
 				.background(
 					RoundedRectangle(cornerRadius: 10)
-						.foregroundColor(.yellow))
+						.foregroundColor(note.color))
 			if let owner = note.owner {
 				Image(owner.profilePhotoString)
 					.resizable()
 					.aspectRatio(contentMode: .fill)
 					.frame(width: 50, height: 50)
 					.cornerRadius(15)
-					.offset(x: 125)
+					.offset(x: -30, y: 30)
 			}
+			HStack{
+				Spacer()
+				ContextMenuButton(model: board) {
+					board.notes.remove(at: board.notes.firstIndex(of: note)!)
+				}
+				.buttonStyle(.plain)
+				.foregroundColor(.white)
+				
+			}.padding()
 		}
 		.shadow(radius: 5)
 		.position(x: location.x, y:keyboardHeight == 0 ? location.y : keyboardHeight / 2)
@@ -56,8 +64,10 @@ struct NoteCardView: View {
 		}
 		.dropDestination(for: Profile.self) { items, location in
 			note.owner = items.first!
+			note.color = board.favouriteColors[board.profiles.firstIndex(of: items.first!)!]
 			return true
 		}
+		.frame(width: 200)
 	}
 }
 
@@ -87,5 +97,8 @@ extension Notification {
 	NoteCardView(note: Note(owner: Profile(name: "Jane Doe",
 										   initials: "JD",
 										   profilePhotoString: "jane-doe",
-										   alergens: [.seafood]), content: "Test"), board: BoardModel())
+										   alergens: [.seafood]),
+							content: "Test",
+							color: .blue,
+							x: 0, y:0), board: BoardModel())
 }

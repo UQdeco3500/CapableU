@@ -11,9 +11,41 @@ import UniformTypeIdentifiers
 
 @Observable class BoardModel {
 	var stickers: [ProfileSticker] = []
-	var notes: [Note] = []
+	
+	var photos: [Photo] = [
+		Photo(owner: Profile(name: "Hannah Pritchet",
+							 initials: "HP",
+							 profilePhotoString: "hannah-pritchet",
+							 alergens: []),
+			  imageString: "pasta",
+			  title: "Monday's Pasta Salad",
+			  description: "Leftovers are in the fridge, help yourself!",
+			  x: -300, y: 650)]
+	
+	var notes: [Note] = [
+		Note(content: "Meal ideas for Thursday night", x: 450, y: 50),
+		Note(owner: Profile(name: "Good Boy",
+							initials: "GB",
+							profilePhotoString: "good-boy",
+							alergens: []),
+			 content: "Looks so delicious!",
+			 color: .cyan,
+			 x: 525, y: 350),
+		Note(content: """
+					  Grocery List
+					  - Milk
+					  - Bread
+					  """,
+			 color: .gray,
+			 x: -375, y: 225),
+		Note(content: "Remember! Inspection on Friday 27th!", color:.orange, x: 100, y: 50)]
+	
+	
 	var recipes: [Recipe] = [
-		Recipe(owner: nil,
+		Recipe(owner: Profile(name: "Andrew Jones",
+							  initials: "AJ",
+							  profilePhotoString: "andrew-jones",
+							  alergens: []),
 			   title: "Poke Bowl",
 			   coverPhotoString: "poke-bowl",
 			   description: "These delicious Poke Bowls are healthy and delicious!",
@@ -33,7 +65,10 @@ import UniformTypeIdentifiers
 			   "Cook the edamame or broad beans in a large saucepan of boiling water following packet directions. Peel. Place in a bowl.",
 			   "Heat oil in a large non-stick frying pan over medium heat. Cook salmon, turning, for 4-5 mins or until golden or cooked to your liking.",
 			   "Meanwhile, heat the rice following packet directions. Place the salad mix from the salad kit in a large bowl. Add half the dressing from the salad kit and toss to combine.",
-			   "Divide the rice among serving bowls. Top with the salad mixture, edamame or broad beans, salmon, cucumber, spring onion and ginger. Sprinkle with the sesame seeds from the salad kit and drizzle with remaining dressing."])]
+			   "Divide the rice among serving bowls. Top with the salad mixture, edamame or broad beans, salmon, cucumber, spring onion and ginger. Sprinkle with the sesame seeds from the salad kit and drizzle with remaining dressing."],
+			   x: 450,
+			   y: 200)]
+	
 	let profiles: [Profile] = [
 		Profile(name: "Jane Doe",
 				initials: "JD",
@@ -42,7 +77,23 @@ import UniformTypeIdentifiers
 		Profile(name: "John Smith",
 				initials: "JS",
 				profilePhotoString: "john-smith",
-				alergens: [.nuts])]
+				alergens: [.nuts]),
+		Profile(name: "Hannah Pritchet",
+				initials: "HP",
+				profilePhotoString: "hannah-pritchet",
+				alergens: []),
+		Profile(name: "Andrew Jones",
+				initials: "AJ",
+				profilePhotoString: "andrew-jones",
+				alergens: []),
+		Profile(name: "Good Boy",
+				initials: "GB",
+				profilePhotoString: "good-boy",
+				alergens: [])]
+	
+	let favouriteColors: [Color] = [
+		.red,.green,.blue,.indigo,.cyan
+	]
 	
 	func hasAlergenConflict(_ recipe: Recipe) -> [Profile]?{
 		var conflictingProfiles: [Profile] = []
@@ -64,6 +115,21 @@ struct Note : Identifiable, Hashable {
 	
 	var owner: Profile?
 	var content : String
+	var color: Color = .yellow
+	var x: CGFloat
+	var y: CGFloat
+
+}
+
+struct Photo: Identifiable, Hashable {
+	var id = UUID()
+	
+	var owner: Profile?
+	var imageString : String
+	var title: String?
+	var description: String?
+	var x: CGFloat = 0
+	var y: CGFloat = 0
 }
 
 struct Recipe : Identifiable, Hashable {
@@ -77,6 +143,9 @@ struct Recipe : Identifiable, Hashable {
 	var alergens: [alergenFlag]
 	var ingredients: [String]
 	var method: [String]
+	
+	var x: CGFloat = 0
+	var y: CGFloat = 0
 	
 	mutating func setOwner(as profile: Profile) {
 		owner = profile

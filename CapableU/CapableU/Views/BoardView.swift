@@ -23,11 +23,19 @@ struct BoardView: View {
 					return true
 				}
 			ForEach(board.recipes, id: \.self) {
-				RecipeCardView(recipe: $0, model: board)
+				RecipeCardView(location: CGPoint(x: $0.x, y: $0.y),
+							   recipe: $0,
+							   model: board)
 					.frame(maxWidth: 200)
 			}
+			ForEach(board.photos, id: \.self) {
+				PhotoCardView(location: CGPoint(x: $0.x, y: $0.y),
+							  photo: $0,
+						      model: board)
+				.frame(maxWidth: 200)
+			}
 			ForEach(board.notes, id: \.self) {
-				NoteCardView(note: $0, board: board)
+				NoteCardView(location: CGPoint(x: $0.x, y: $0.y),note: $0, board: board)
 			}
 			ForEach(board.stickers, id: \.self) {
 				let location = CGPoint(x: $0.x, y: $0.y)

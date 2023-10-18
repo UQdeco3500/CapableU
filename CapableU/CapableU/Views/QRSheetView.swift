@@ -17,11 +17,15 @@ struct QRSheetView: View {
 	let link = ""
 	
     var body: some View {
-		Image(uiImage: generateQRCode(from: "\(link)"))
-			.interpolation(.none)
-			.resizable()
-			.scaledToFit()
-			.frame(width: 200, height: 200)
+		VStack{
+			Text("Scan here to upload.")
+			Image(uiImage: generateQRCode(from: "\(link)"))
+				.interpolation(.none)
+				.resizable()
+				.scaledToFit()
+				.frame(width: 200, height: 200)
+		}
+		
     }
 	
 	func generateQRCode(from string: String) -> UIImage {

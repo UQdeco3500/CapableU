@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecipeCardView: View {
-	@State private var location: CGPoint = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
+	@State var location: CGPoint = CGPoint(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY)
 	@GestureState private var fingerLocation: CGPoint? = nil
 	@GestureState private var startLocation: CGPoint? = nil
 	
@@ -68,15 +68,7 @@ struct RecipeCardView: View {
 								.foregroundColor(.white)
 								.shadow(radius: 4)
 								.padding(EdgeInsets(top: 0, leading: 16, bottom: 8, trailing: 16))
-							if  alergenConflicts != nil {
-								Spacer()
-								Image(systemName: "exclamationmark.octagon.fill")
-									.symbolRenderingMode(.multicolor)
-									.resizable()
-									.scaledToFit()
-									.frame(maxHeight: 25)
-									.padding()
-							}
+							
 							
 						}
 					}
@@ -90,8 +82,28 @@ struct RecipeCardView: View {
 						.frame(width: 50, height: 50)
 						.cornerRadius(15)
 						.padding()
-						.offset(x: -50, y: -150)
+						.offset(x: -50, y: 30)
 				}
+				VStack{
+					HStack {
+						if  alergenConflicts != nil {
+							Image(systemName: "person.crop.circle.badge.exclamationmark")
+								.symbolRenderingMode(.multicolor)
+								.resizable()
+								.scaledToFit()
+								.frame(width: 40, height: 40)
+								.foregroundStyle(.red)
+								.offset(x: -30, y: -30)
+						}
+						Spacer()
+						ContextMenuButton(model: model) {
+							model.recipes.remove(at: model.recipes.firstIndex(of: recipe)!)
+						}
+						.buttonStyle(.plain)
+						.foregroundColor(.white)
+					}
+					Spacer()
+				}.padding(10)
 			}
 			RecipeCardDetailView(isVisible: $isDetailed, recipe: recipe, alergenConflicts: alergenConflicts)
 				.offset(y: -20)
@@ -172,14 +184,21 @@ struct RecipeCardDetailView: View {
 					.font(.body)
 					.shadow(radius: 4)
 					.padding(EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 16))
-				if alergenConflicts != nil {
+				if !recipe.alergens.isEmpty {
 					HStack {
 						Text("\(Image(systemName: "allergens")) Contains: ")
+						
 						ForEach(recipe.alergens, id: \.self) { alergen in
-							Text("\(Image(systemName: alergen.rawValue))")
+							VStack {
+								Text("\(Image(systemName: alergen.rawValue))")
+								Text("\(alergen.rawValue == "brain" ? "nuts" : alergen.rawValue)")
+									.font(.caption2)
+							}
 						}
 						Spacer()
-					}				}
+					}
+					.symbolRenderingMode(.multicolor)
+				}
 				if let conflictingProfiles = alergenConflicts {
 					HStack {
 						Text("\(Image(systemName: "person.crop.circle.badge.exclamationmark")) Not suitable for: ")
@@ -187,11 +206,15 @@ struct RecipeCardDetailView: View {
 							.lineLimit(1)
 						Spacer()
 						ForEach(conflictingProfiles) { profile in
-							Image(profile.profilePhotoString)
-								.resizable()
-								.aspectRatio(contentMode: .fill)
-								.frame(width: 25, height: 25)
-								.cornerRadius(15)
+							ZStack{
+								Image(profile.profilePhotoString)
+									.resizable()
+									.aspectRatio(contentMode: .fill)
+									.frame(width: 40, height: 40)
+									.cornerRadius(15)
+								Text("\(Image(systemName: Set(profile.alergens).intersection(recipe.alergens).first!.rawValue))")
+									.offset(x:20, y:-20)
+							}.padding(4)
 						}
 					}
 				}

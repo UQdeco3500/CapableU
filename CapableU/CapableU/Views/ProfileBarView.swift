@@ -33,10 +33,10 @@ struct ProfileBarView: View {
 				// For example, you can navigate to a profile detail view
 				// or perform some other action related to the profile.
 			}) {
-				Image(systemName: "plus.circle") // Use the profilePhotoString as the image name
+				Image(systemName: "person.crop.circle.badge.plus") // Use the profilePhotoString as the image name
 					.resizable()
-					.aspectRatio(contentMode: .fill)
-					.frame(width: 75, height: 75) // Adjust the size as needed
+					.aspectRatio(contentMode: .fit)
+					.frame(width: 60, height: 60) // Adjust the size as needed
 					.cornerRadius(15)
 			}
 			.buttonStyle(.borderless)
@@ -65,5 +65,5 @@ struct ProfileButtonView: View {
 }
 
 #Preview {
-    ProfileBarView(profiles: [Profile(name: "Jane Doe", initials: "JD", profilePhotoString: "poke-bowl")])
+	ProfileBarView(profiles: BoardModel().profiles)
 }
