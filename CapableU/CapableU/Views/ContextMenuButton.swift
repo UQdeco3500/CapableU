@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct ContextMenuButton<OwnableObject: Ownable>: View {
+struct ContextMenuButton<OwnableType: Ownable>: View {
 	@State private var triggered = false
 	
 	var model: BoardModel
 	
-	@Binding var ownableObject: OwnableObject
+	@Binding var ownableObject: OwnableType
 	
 	var deleteAction: () -> Void
 	
@@ -39,6 +39,23 @@ struct ContextMenuButton<OwnableObject: Ownable>: View {
 				}
 			} label: {
 				Label("Set Author", systemImage: "person.badge.plus")
+			}
+			if var photo = ownableObject as? Photo {
+				Divider()
+				Button{
+					photo.title = ""
+					photo.hasTitle = true
+					ownableObject = photo as! OwnableType
+				} label: {
+					Label("Add title", systemImage: "character.cursor.ibeam")
+				}
+				Button{
+					photo.description = ""
+					photo.hasDescription = true
+					ownableObject = photo as! OwnableType
+				} label: {
+					Label("Add description", systemImage: "text.below.photo")
+				}
 			}
 			
 		} label: {

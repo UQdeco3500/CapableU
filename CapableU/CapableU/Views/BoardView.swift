@@ -23,14 +23,9 @@ struct BoardView: View {
 				PhotoCardView(location: CGPoint(x: $0.x, y: $0.y),
 							  photo: $0,
 						      model: board)
-				.frame(maxWidth: 200)
 			}
 			ForEach(board.notes, id: \.self) {
 				NoteCardView(location: CGPoint(x: $0.x, y: $0.y),note: $0, board: board)
-			}
-			ForEach(board.stickers, id: \.self) {
-				let location = CGPoint(x: $0.x, y: $0.y)
-				ProfileStickerView(location: location, profile: $0.profile)
 			}
 		}
 	}

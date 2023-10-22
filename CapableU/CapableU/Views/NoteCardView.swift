@@ -47,11 +47,17 @@ struct NoteCardView: View {
 						.focused($isFocused)
 					
 					ContextMenuButton(model: board, ownableObject: $note) {
-						board.notes.remove(at: board.notes.firstIndex(of: note)!)
+						board.notes.removeAll { otherNote in
+							if note.id == otherNote.id {
+								return true
+							} else {
+								return false
+							}
+						}
 					}
 					.buttonStyle(.plain)
 					.foregroundColor(.white)
-					.onChange(of: note) {
+					.onChange(of: note.owner) {
 						note.color = board.favouriteColors[board.profiles.firstIndex(of: note.owner!)!]
 					}
 				}
