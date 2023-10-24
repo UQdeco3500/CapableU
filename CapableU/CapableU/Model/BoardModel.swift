@@ -13,7 +13,10 @@ import UniformTypeIdentifiers
 	var possiblePhotos: [Photo] = [
 		Photo(imageString: "pasta"),
 		Photo(imageString: "salad"),
-		Photo(imageString: "tacos")]
+		Photo(imageString: "tacos"),
+		Photo(imageString: "curry"),
+		Photo(imageString: "garlicPasta"),
+		Photo(imageString: "omelette")]
 	var possibleRecipes: [Recipe] = [
 		Recipe(title: "Cheese and Herb Omelette",
 			   coverPhotoString: "omelette",
@@ -52,7 +55,62 @@ import UniformTypeIdentifiers
 				"Cook the edamame or broad beans in a large saucepan of boiling water following packet directions. Peel. Place in a bowl.",
 				"Heat oil in a large non-stick frying pan over medium heat. Cook salmon, turning, for 4-5 mins or until golden or cooked to your liking.",
 				"Meanwhile, heat the rice following packet directions. Place the salad mix from the salad kit in a large bowl. Add half the dressing from the salad kit and toss to combine.",
-				"Divide the rice among serving bowls. Top with the salad mixture, edamame or broad beans, salmon, cucumber, spring onion and ginger. Sprinkle with the sesame seeds from the salad kit and drizzle with remaining dressing."])]
+				"Divide the rice among serving bowls. Top with the salad mixture, edamame or broad beans, salmon, cucumber, spring onion and ginger. Sprinkle with the sesame seeds from the salad kit and drizzle with remaining dressing."]),
+		Recipe(title: "Butter Chicken",
+			   coverPhotoString: "curry",
+			   description: "A classic and indulgent North Indian dish known for its rich and flavorful tomato-based sauce.",
+			   alergens: [.nuts],
+			   ingredients: [
+				"1 lb (450g) boneless chicken, cut into bite-sized pieces",
+				"1/2 cup plain yogurt",
+				"1 tablespoon ginger-garlic paste",
+				"1 teaspoon red chili powder",
+				"1/2 teaspoon turmeric powder",
+				"1 teaspoon garam masala",
+				"Salt to taste",
+				"2 tablespoons butter",
+				"2 tablespoons vegetable oil",
+				"2 medium onions, finely chopped",
+				"1 tablespoon ginger-garlic paste",
+				"1 teaspoon ground coriander",
+				"1 teaspoon ground cumin",
+				"1/2 teaspoon ground cardamom",
+				"1/2 teaspoon red chili powder (adjust to your spice preference)",
+				"1 cup tomato puree",
+				"1/4 cup cashew paste (optional, for extra creaminess)",
+				"1 cup heavy cream",
+				"1/4 cup water",
+				"Fresh cilantro, for garnish"],
+			   method:[
+				"In a mixing bowl, combine the yogurt, ginger-garlic paste, red chili powder, turmeric, garam masala, and salt. Add the chicken pieces and coat them evenly with the marinade. Cover and refrigerate for at least 30 minutes, or ideally, marinate overnight for the best flavor.",
+				"Heat 2 tablespoons of butter and 1 tablespoon of vegetable oil in a large, heavy-bottomed pan over medium-high heat. Add the marinated chicken pieces and cook until they turn golden brown and are cooked through, about 8-10 minutes. Remove the chicken and set it aside.",
+				"In the same pan, add the remaining tablespoon of oil and butter. Add finely chopped onions and sauté until they turn translucent and slightly brown. Stir in ginger-garlic paste, ground coriander, ground cumin, ground cardamom, and red chili powder. Cook for 2-3 minutes.",
+				"Add the tomato puree and cook for about 5-7 minutes until the oil begins to separate from the sauce. If using cashew paste, add it at this stage and stir well.",
+				"Return the cooked chicken to the pan and mix it into the sauce. Pour in the heavy cream and water. Stir well. Allow the butter chicken to simmer for 10-15 minutes on low heat, letting the flavors meld together. Season with salt to taste.",
+				"Garnish with fresh cilantro leaves. Serve hot with naan, rice, or roti."]),
+		Recipe(title: "Creamy Garlic Parmesan Pasta",
+			   coverPhotoString: "garlicPasta",
+			   description: "A simple yet indulgent meal that's sure to satisfy your cravings.",
+			   alergens: [],
+			   ingredients: [
+				"8 ounces (about 2 cups) of your choice of pasta (such as fettuccine or linguine)",
+				"2 tablespoons unsalted butter",
+				"4 cloves garlic, minced",
+				"1 cup heavy cream",
+				"1 cup grated Parmesan cheese",
+				"Salt and black pepper, to taste",
+				"Fresh parsley, for garnish (optional)"],
+			   method:[
+				"Bring a large pot of salted water to a boil. Add the pasta and cook according to the package instructions until it reaches your desired level of doneness. Remember to reserve about 1/2 cup of pasta cooking water before draining.",
+				"In a large skillet or saucepan, melt the butter over medium heat.",
+				"Add the minced garlic and sauté for about 1-2 minutes, or until it becomes fragrant and just begins to turn golden.",
+				"Pour in the heavy cream, and bring the mixture to a gentle simmer. Reduce the heat to low.",
+				"Stir in the grated Parmesan cheese and continue to cook, stirring constantly, until the cheese is fully melted and the sauce thickens, which should take about 5-7 minutes.",
+				"Season the sauce with salt and black pepper to taste. Keep in mind that Parmesan cheese is already salty, so go easy on the salt.",
+			   "If the sauce becomes too thick, you can add a small amount of the reserved pasta cooking water to reach your desired consistency.",
+			   "Add the cooked and drained pasta to the creamy sauce and toss them together, ensuring the pasta is well coated with the sauce.",
+			   "Garnish with fresh parsley for a burst of color and flavor, if desired.",
+			   "Serve your Creamy Garlic Parmesan Pasta hot, perhaps with additional Parmesan cheese to sprinkle on top."])]
 	
 	var photos: [Photo] = []
 	
